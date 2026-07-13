@@ -1,0 +1,3 @@
+preferWorkspacePackages: true
+packages:
+  - "libs/*"

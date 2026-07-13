@@ -1,0 +1,9 @@
+{
+  "display": "@tanstack-isomorphic-form/core",
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  }
+}

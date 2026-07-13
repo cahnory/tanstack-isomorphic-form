@@ -1,0 +1,32 @@
+{
+  "name": "tanstack-isomorphic-form",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "libs/*"
+    ]
+  },
+  "type": "module",
+  "scripts": {
+    "check": "concurrently -r -g pnpm:check:lint pnpm:check:format pnpm:check:types pnpm:check:unused",
+    "check:format": "oxfmt --check",
+    "check:lint": "oxlint --deny-warnings",
+    "check:types": "concurrently -r -g 'pnpm -r exec tsc --noEmit'",
+    "check:unused": "knip",
+    "fix": "concurrently -r -g pnpm:fix:unused pnpm:fix:format pnpm:fix:lint",
+    "fix:format": "oxfmt",
+    "fix:lint": "oxlint --fix",
+    "fix:unused": "knip --fix"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "knip": "^6.26.0",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
+    "oxlint-tsgolint": "^0.24.0",
+    "typescript": "^7.0.2"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

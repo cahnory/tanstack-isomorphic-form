@@ -1,0 +1,10 @@
+{
+  "display": "@tanstack-isomorphic-form/react",
+  "extends": "../../tsconfig.base.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": ["@types/react"]
+  }
+}
