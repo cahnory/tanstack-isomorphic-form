@@ -2,7 +2,31 @@
   "name": "tanstack-isomorphic-form",
   "version": "0.1.0",
   "private": true,
+  "description": "Progressively enhanced forms for TanStack Start.",
+  "keywords": [
+    "form",
+    "forms",
+    "isomorphic",
+    "progressive-enhancement",
+    "react-start",
+    "tanstack",
+    "tanstack-start",
+    "validation"
+  ],
+  "homepage": "https://github.com/cahnory/tanstack-isomorphic-form#readme",
+  "bugs": {
+    "url": "https://github.com/cahnory/tanstack-isomorphic-form/issues"
+  },
   "license": "MIT",
+  "author": {
+    "name": "François Germain (Cahnory)",
+    "email": "cahnory@gmail.com",
+    "url": "https://github.com/cahnory"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cahnory/tanstack-isomorphic-form.git"
+  },
   "workspaces": {
     "packages": [
       "libs/*"
@@ -23,7 +47,7 @@
     "fix:unused": "knip --fix",
     "release": "pnpm release:verify && changeset publish",
     "release:verify": "pnpm check && pnpm build",
-    "version-packages": "changeset version"
+    "release:version": "changeset version"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
