@@ -1,0 +1,8 @@
+{
+  "display": "Workspace",
+  "extends": "./tsconfig.base.json",
+  "exclude": ["libs/*/dist/**/*", "libs/*/src/**/*"],
+  "compilerOptions": {
+    "noEmit": true
+  }
+}

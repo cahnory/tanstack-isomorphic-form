@@ -10,10 +10,11 @@
   },
   "type": "module",
   "scripts": {
+    "build": "tsdown",
     "check": "concurrently -r -g pnpm:check:lint pnpm:check:format pnpm:check:types pnpm:check:unused",
     "check:format": "oxfmt --check",
     "check:lint": "oxlint --deny-warnings",
-    "check:types": "concurrently -r -g 'pnpm -r exec tsc --noEmit'",
+    "check:types": "tsc --noEmit -p tsconfig.json",
     "check:unused": "knip",
     "fix": "concurrently -r -g pnpm:fix:unused pnpm:fix:format pnpm:fix:lint",
     "fix:format": "oxfmt",
@@ -26,6 +27,7 @@
     "oxfmt": "^0.58.0",
     "oxlint": "^1.73.0",
     "oxlint-tsgolint": "^0.24.0",
+    "tsdown": "^0.22.7",
     "typescript": "^7.0.2"
   },
   "packageManager": "pnpm@10.33.0"

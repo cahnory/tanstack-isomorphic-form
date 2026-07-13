@@ -1,3 +1,6 @@
+# Project files
+/libs/*/dist
+
 # Tooling files
 .pnpm-store
 *.tsbuildinfo
