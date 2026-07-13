@@ -1,7 +1,32 @@
 {
   "name": "@tanstack-isomorphic-form/react",
   "version": "0.1.0",
+  "description": "React bindings for progressively enhanced isomorphic forms in TanStack Start.",
+  "keywords": [
+    "form",
+    "forms",
+    "isomorphic",
+    "progressive-enhancement",
+    "react",
+    "react-start",
+    "tanstack",
+    "tanstack-start"
+  ],
+  "homepage": "https://github.com/cahnory/tanstack-isomorphic-form/tree/main/libs/react#readme",
+  "bugs": {
+    "url": "https://github.com/cahnory/tanstack-isomorphic-form/issues"
+  },
   "license": "MIT",
+  "author": {
+    "name": "François Germain (Cahnory)",
+    "email": "cahnory@gmail.com",
+    "url": "https://github.com/cahnory"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cahnory/tanstack-isomorphic-form.git",
+    "directory": "libs/react"
+  },
   "files": [
     "dist"
   ],

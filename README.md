@@ -1,6 +1,6 @@
 # TanStack Isomorphic Form <!-- omit in toc -->
 
-Progressively enhanced forms for `@tanstack/react-start`.
+Progressively enhanced forms for TanStack Start.
 
 This library helps you build forms that work:
 
@@ -8,30 +8,27 @@ This library helps you build forms that work:
 - with JavaScript, with a smoother client-side submit experience
 - with the same validation and action logic in both cases
 
-For `@tanstack/react-start`, `actionFn` should be a `createServerFn` server function. That keeps form submission working in both the server-rendered and client-enhanced flows.
+It is built around an isomorphic form model: keep one form flow, one validation story, and one action contract across server-rendered and client-enhanced usage.
 
-The React package currently exposes:
+Today, the available package is:
 
-- `createIsomorphicForm`
-- `redirectAfterAction`
-
-Under the hood, the form schema must implement both `StandardSchemaV1` and `StandardJSONSchemaV1`. The example below uses `zod`, but the library works with any schema library or adapter that satisfies those two interfaces.
+- [`@tanstack-isomorphic-form/react`](./libs/react/README.md)
 
 ## Table of Contents <!-- omit in toc -->
 
 - [Features](#features)
+- [Packages](#packages)
 - [Installation](#installation)
-- [Example](#example)
+- [Current Example: React Start](#current-example-react-start)
   - [1. Create the server action and form](#1-create-the-server-action-and-form)
-  - [2. Use the loader in a React Start route](#2-use-the-loader-in-a-react-start-route)
+  - [2. Use the loader in a route](#2-use-the-loader-in-a-route)
   - [Example Notes](#example-notes)
-- [API](#api)
+- [Shared API](#shared-api)
   - [`createIsomorphicForm(options)`](#createisomorphicformoptions)
   - [`redirectAfterAction(options)`](#redirectafteractionoptions)
-  - [Options](#options)
-  - [`formState`](#formstate)
-- [Form Field Naming](#form-field-naming)
-- [Error Handling](#error-handling)
+  - [Common Options](#common-options)
+  - [Shared Loader Result](#shared-loader-result)
+- [Package Documentation](#package-documentation)
 - [Contributing](#contributing)
   - [Development](#development)
   - [Releases](#releases)
@@ -42,9 +39,15 @@ Under the hood, the form schema must implement both `StandardSchemaV1` and `Stan
 
 - Works with or without JavaScript enabled
 - One form flow for server submission and client enhancement
+- Shared form contract across framework-specific packages
 - Typed values inferred from your schema
 - Schema errors and form-level errors exposed separately
 - Redirect support after submit
+
+## Packages
+
+- `@tanstack-isomorphic-form/react`: React integration for TanStack Start
+- future framework-specific packages are expected to expose the same shared contract
 
 ## Installation
 
@@ -52,9 +55,9 @@ Under the hood, the form schema must implement both `StandardSchemaV1` and `Stan
 pnpm add @tanstack-isomorphic-form/react
 ```
 
-## Example
+## Current Example: React Start
 
-The example below shows the full flow for a simple todo creation form in `@tanstack/react-start`.
+The example below uses `@tanstack-isomorphic-form/react`, which is the current framework package. Future framework packages should follow the same shared contract while exposing their own integration-specific helpers.
 
 ### 1. Create the server action and form
 
@@ -66,12 +69,10 @@ import { z } from "zod";
 
 import { createTodo } from "./todos.service.ts";
 
-// Define the form schema.
 const todoSchema = z.object({
   title: z.string().trim().min(1, "Title is required").max(120, "Title is too long"),
 });
 
-// Create the server action used by both the server-rendered and client-enhanced flows.
 const createTodoAction = createServerFn({ method: "POST" })
   .validator(todoSchema)
   .handler(async ({ data }) => {
@@ -88,14 +89,13 @@ const createTodoAction = createServerFn({ method: "POST" })
     }
   });
 
-// Bind the schema and action together.
 export const createTodoForm = createIsomorphicForm({
   schema: todoSchema,
   actionFn: createTodoAction,
 });
 ```
 
-### 2. Use the loader in a React Start route
+### 2. Use the loader in a route
 
 ```tsx
 // src/routes/todos.tsx
@@ -103,7 +103,6 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { createTodoForm } from "../features/todos/todos.form.ts";
 
-// Use the form loader in the route.
 export const Route = createFileRoute("/todos")({
   loader: async (loaderOptions) => ({
     formLoaderData: await createTodoForm.loader(loaderOptions),
@@ -113,7 +112,6 @@ export const Route = createFileRoute("/todos")({
 
 function CreateTodoPage() {
   const { formLoaderData } = Route.useLoaderData();
-  // Render the same form with progressive enhancement when JavaScript is available.
   const { formProps, formState } = createTodoForm.useIsomorphicForm(formLoaderData);
 
   const titleError =
@@ -151,49 +149,56 @@ function CreateTodoPage() {
 
 ### Example Notes
 
-- `zod` is used for the schema authoring experience.
-- The library contract is still based on `StandardSchemaV1` plus `StandardJSONSchemaV1`.
+- `zod` is used here for schema authoring.
 - In a React Start app, `actionFn` should be a `createServerFn`.
 - The same form works as a regular HTML form without JavaScript and as an enhanced form when JavaScript is available.
+- The React-specific hook shown here is package-specific, while the loader/action contract is intended to stay shared.
 
-## API
+## Shared API
 
 ### `createIsomorphicForm(options)`
 
-Creates a form definition and returns:
+Creates a form definition around a shared cross-package contract.
 
-- `loader`: reads the request, runs validation and the action on POST, and returns a typed form state
-- `useIsomorphicForm`: turns loader data into `formProps` and reactive `formState`
+Across framework packages, it returns:
+
+- `loader`: reads the request, runs validation and the action on `POST`, and returns a typed form state
+
+Framework packages can also return integration-specific helpers.
+
+For example:
+
+- `@tanstack-isomorphic-form/react` also returns `useIsomorphicForm`
 
 ### `redirectAfterAction(options)`
 
 Helper for returning a redirect from your action while preserving the form action result shape.
 
-### Options
+### Common Options
 
 - `schema`: required form schema
-- `actionFn`: a React Start server function, typically `createServerFn({ method: "POST" })`, that receives validated `data`
+- `actionFn`: server action used by the framework integration
 - `defaultValues`: optional initial values
 - `formDataOptions`: optional parsing delimiters for nested keys
-- `returnedValueSanitizer`: optional function to normalize values stored in `formState`
+- `returnedValueSanitizer`: optional function to normalize values stored in form state
 
-### `formState`
+Some framework packages may add more options when needed, while the shared options stay aligned.
 
-`formState.status` can be:
+### Shared Loader Result
+
+The shared loader result is designed around these states:
 
 - `idle`
 - `pending`
 - `success`
 - `error`
 
-`formState` also includes:
+The form state includes:
 
 - `values`: the extracted form values
 - `result`: present after a successful action
 - `error.schema`: schema validation issues
 - `error.form`: form-level action error or unexpected error
-
-## Form Field Naming
 
 Nested objects and arrays are extracted from `FormData` key names. By default, these delimiters are used:
 
@@ -206,16 +211,12 @@ Examples:
 - `address.street`
 - `items[0].label`
 
-You can override these delimiters with `formDataOptions`.
-
-## Error Handling
-
-There are two error channels:
-
-- schema errors: validation failed before your action ran
-- form errors: your action returned `ok: false` or threw unexpectedly
-
 Unexpected thrown errors are wrapped as `FormActionPanic`.
+
+## Package Documentation
+
+- React package guide: [`libs/react/README.md`](./libs/react/README.md)
+- Core package overview: [`libs/core/README.md`](./libs/core/README.md)
 
 ## Contributing
 
