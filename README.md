@@ -1,4 +1,4 @@
-# TanStack Isomorphic Form
+# TanStack Isomorphic Form <!-- omit in toc -->
 
 Progressively enhanced forms for `@tanstack/react-start`.
 
@@ -16,6 +16,27 @@ The React package currently exposes:
 - `redirectAfterAction`
 
 Under the hood, the form schema must implement both `StandardSchemaV1` and `StandardJSONSchemaV1`. The example below uses `zod`, but the library works with any schema library or adapter that satisfies those two interfaces.
+
+## Table of Contents <!-- omit in toc -->
+
+- [Features](#features)
+- [Installation](#installation)
+- [Example](#example)
+  - [1. Create the server action and form](#1-create-the-server-action-and-form)
+  - [2. Use the loader in a React Start route](#2-use-the-loader-in-a-react-start-route)
+  - [Example Notes](#example-notes)
+- [API](#api)
+  - [`createIsomorphicForm(options)`](#createisomorphicformoptions)
+  - [`redirectAfterAction(options)`](#redirectafteractionoptions)
+  - [Options](#options)
+  - [`formState`](#formstate)
+- [Form Field Naming](#form-field-naming)
+- [Error Handling](#error-handling)
+- [Contributing](#contributing)
+  - [Development](#development)
+  - [Releases](#releases)
+- [Status](#status)
+- [License](#license)
 
 ## Features
 
@@ -128,14 +149,14 @@ function CreateTodoPage() {
 }
 ```
 
-### Notes About The Example
+### Example Notes
 
 - `zod` is used for the schema authoring experience.
 - The library contract is still based on `StandardSchemaV1` plus `StandardJSONSchemaV1`.
 - In a React Start app, `actionFn` should be a `createServerFn`.
 - The same form works as a regular HTML form without JavaScript and as an enhanced form when JavaScript is available.
 
-## API Overview
+## API
 
 ### `createIsomorphicForm(options)`
 
@@ -196,13 +217,57 @@ There are two error channels:
 
 Unexpected thrown errors are wrapped as `FormActionPanic`.
 
-## Development
+## Contributing
+
+Contributor workflows and release expectations are documented below.
+
+### Development
 
 ```bash
 pnpm install
 pnpm check
 pnpm fix
 ```
+
+### Releases
+
+This repository uses Changesets for versioning and npm publication.
+
+For any package-affecting change:
+
+```bash
+pnpm changeset
+```
+
+Choose the correct bump type:
+
+- `patch` for fixes
+- `minor` for backward-compatible features
+- `major` for breaking changes
+
+The CI workflow then enforces:
+
+- `pnpm check` passes
+- `pnpm build` passes
+- both packages keep the same version number
+
+Pull requests should use the Changesets GitHub app for changeset guidance:
+
+- install `changeset-bot` on the repository
+- the bot comments when a PR may need a changeset
+- if the PR affects a release, run `pnpm changeset`
+
+On every push to `main`, GitHub Actions runs Changesets:
+
+- if unreleased changesets exist, it opens or updates a release PR
+- merging that PR creates the git tag and publishes both packages to npm
+
+Repository setup still required:
+
+- configure a GitHub Actions environment named `release` and add the desired protection rules
+- configure npm trusted publishing for each package with the `release.yml` GitHub Actions workflow and the `release` environment name
+- install the `changeset-bot` GitHub app on this repository
+- allow GitHub Actions to create pull requests if your repository settings restrict that
 
 ## Status
 

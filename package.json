@@ -11,6 +11,7 @@
   "type": "module",
   "scripts": {
     "build": "tsdown",
+    "changeset": "changeset",
     "check": "concurrently -r -g pnpm:check:lint pnpm:check:format pnpm:check:types pnpm:check:unused",
     "check:format": "oxfmt --check",
     "check:lint": "oxlint --deny-warnings",
@@ -19,9 +20,13 @@
     "fix": "concurrently -r -g pnpm:fix:unused pnpm:fix:format pnpm:fix:lint",
     "fix:format": "oxfmt",
     "fix:lint": "oxlint --fix",
-    "fix:unused": "knip --fix"
+    "fix:unused": "knip --fix",
+    "release": "pnpm release:verify && changeset publish",
+    "release:verify": "pnpm check && pnpm build",
+    "version-packages": "changeset version"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "concurrently": "^10.0.3",
     "knip": "^6.26.0",
     "oxfmt": "^0.58.0",
