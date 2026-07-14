@@ -15,15 +15,15 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -48,15 +48,15 @@ jobs:
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: pnpm
@@ -66,14 +66,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Create release PR or publish to npm
-        uses: changesets/action@v2
+        uses: changesets/action@v1
         with:
-          version-script: pnpm release:version
-          publish-script: pnpm release
-          commit-message: "chore: release packages"
-          pr-title: "chore: release packages"
-          create-github-releases: true
-          push-git-tags: true
+          version: pnpm release:version
+          publish: pnpm release
+          commit: "chore: release packages"
+          title: "chore: release packages"
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
