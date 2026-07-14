@@ -26,6 +26,7 @@ Today, the available package is:
 - [Shared API](#shared-api)
   - [`createIsomorphicForm(options)`](#createisomorphicformoptions)
   - [`redirectAfterAction(options)`](#redirectafteractionoptions)
+  - [`FormActionPanic`](#formactionpanic)
   - [Common Options](#common-options)
   - [Shared Loader Result](#shared-loader-result)
 - [Package Documentation](#package-documentation)
@@ -173,6 +174,10 @@ For example:
 ### `redirectAfterAction(options)`
 
 Helper for returning a redirect from your action while preserving the form action result shape.
+
+### `FormActionPanic`
+
+Represents an unexpected exception thrown while running the form action or loader flow.
 
 ### Common Options
 
