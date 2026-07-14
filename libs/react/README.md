@@ -13,6 +13,7 @@ Progressively enhanced forms for `@tanstack/react-start`.
 - [API](#api)
   - [`createIsomorphicForm(options)`](#createisomorphicformoptions)
   - [`redirectAfterAction(options)`](#redirectafteractionoptions)
+  - [`FormActionPanic`](#formactionpanic)
   - [Options](#options)
   - [`useIsomorphicForm(loaderData)`](#useisomorphicformloaderdata)
   - [`formState`](#formstate)
@@ -31,6 +32,7 @@ pnpm add @tanstack-isomorphic-form/react
 
 - `createIsomorphicForm`
 - `redirectAfterAction`
+- `FormActionPanic`
 
 ## Example
 
@@ -143,6 +145,10 @@ Creates a form definition and returns:
 ### `redirectAfterAction(options)`
 
 Helper for returning a redirect from your action while preserving the form action result shape.
+
+### `FormActionPanic`
+
+Represents an unexpected exception thrown while running the form action or loader flow.
 
 ### Options
 
