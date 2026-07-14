@@ -1,6 +1,6 @@
 {
   "name": "@tanstack-isomorphic-form/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core primitives for isomorphic form loading, form-data extraction, and actions in TanStack Start.",
   "keywords": [
     "form",
