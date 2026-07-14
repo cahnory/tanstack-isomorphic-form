@@ -1,4 +1,4 @@
-name: Release
+name: Continuous Integration
 
 on:
   pull_request:
@@ -37,15 +37,13 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-  release:
+  release-pr:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: validate
     runs-on: ubuntu-latest
-    environment: release
     permissions:
       contents: write
       pull-requests: write
-      id-token: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -60,19 +58,15 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Create release PR or publish to npm
+      - name: Create or update release PR
         uses: changesets/action@v1
         with:
           version: pnpm release:version
-          publish: pnpm release
           commit: "chore: release packages"
           title: "chore: release packages"
-          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
