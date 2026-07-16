@@ -1,5 +1,12 @@
 # @tanstack-isomorphic-form/react
 
+## 0.2.1
+
+### Patch Changes
+
+- 2eed09f: Re-export `FormState` from the React package entrypoint so consumers using form loader types in route definitions do not get non-portable inferred type errors that reference internal core package paths.
+  - @tanstack-isomorphic-form/core@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes
