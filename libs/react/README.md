@@ -158,12 +158,18 @@ Represents an unexpected exception thrown while running the form action or loade
 - `formDataOptions`: optional parsing delimiters for nested keys
 - `returnedValueSanitizer`: optional function to normalize values stored in `formState`
 
-### `useIsomorphicForm(loaderData)`
+### `useIsomorphicForm(loaderData, options?)`
 
 Turns loader data into:
 
 - `formProps`: props to spread onto the `<form>`
 - `formState`: reactive state representing the current form lifecycle
+
+Hook options:
+
+- `defaultValues`: optional initial values for this hook instance; these seed `formState.values` and take precedence over defaults passed to the loader, which themselves take precedence over defaults configured on `createIsomorphicForm`
+- `onSuccess`: optional callback invoked after a successful action
+- `onError`: optional callback invoked for form-level errors and unexpected failures
 
 ### `formState`
 
