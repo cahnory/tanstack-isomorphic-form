@@ -41,7 +41,6 @@ export const createIsomorphicForm = <
     }),
     useIsomorphicForm: createIsomorphicFormHook({
       actionFn,
-      defaultValues,
       formDataExtractor,
       returnedValueSanitizer,
       schema,

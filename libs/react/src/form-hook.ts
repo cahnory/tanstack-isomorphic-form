@@ -46,13 +46,11 @@ type IsomorphicFormHookOptions<
 
 export const createIsomorphicFormHook =
   <const TSchema extends FormDataSchema, const TActionFn extends FormAction<TSchema>>({
-    defaultValues,
     formDataExtractor,
     actionFn,
     returnedValueSanitizer,
     schema,
   }: {
-    defaultValues?: InferFormDataSchemaExtract<TSchema> | undefined;
     formDataExtractor: FormDataExtractor<TSchema>;
     schema: TSchema;
     returnedValueSanitizer?: ValueSanitizer<TSchema> | undefined;
@@ -60,7 +58,7 @@ export const createIsomorphicFormHook =
   }): IsomorphicFormHook<TSchema, TActionFn> =>
   <const TActionUrl extends string>(
     { actionUrl, state }: Awaited<FormLoaderReturn<TSchema, TActionFn, TActionUrl>>,
-    { onError, onSuccess }: IsomorphicFormHookOptions<TSchema, TActionFn> = {},
+    { defaultValues, onError, onSuccess }: IsomorphicFormHookOptions<TSchema, TActionFn> = {},
   ) =>
     useIsomorphicForm({
       actionFn,
@@ -103,7 +101,12 @@ const useIsomorphicForm = <
 }): IsomorphicFormHookReturn<TSchema, TActionFn, TActionUrl> => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState(
-    state.status === "idle" && defaultValues ? { ...state, values: defaultValues } : state,
+    state.status === "idle" && defaultValues
+      ? {
+          ...state,
+          values: returnedValueSanitizer ? returnedValueSanitizer(defaultValues) : defaultValues,
+        }
+      : state,
   );
   const submitRef = useRef(false);
 
